@@ -5,20 +5,21 @@
 # greatest product. What is the value of this product?
 
 def largest_product_in_series(number)
-  series = number.each_char.map(&:to_i)
+  series = number.dup
   factors = []
   largest_product = 0
   current_product = 1
+  index = -1
   loop do
     while factors.length < 13
-      new_factor = series.shift
+      new_factor = series[index += 1]
       # Could replace this nil check with a rescue for a NoMethodError since nil
       # won't respond to #zero?, but seems like the series would have to be
       # pretty long to make the performance benefit worth confusing the
       # implementation.
-      if new_factor.nil?
-        return largest_product
-      elsif new_factor.zero?
+      return largest_product if new_factor.nil?
+      new_factor = new_factor.to_i
+      if new_factor.zero?
         factors.clear
         current_product = 1
       else
